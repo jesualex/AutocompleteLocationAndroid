@@ -13,15 +13,15 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.RectangularBounds
-import com.jesualex.autocompletelocation.AutoCompleteLocation
-import com.jesualex.autocompletelocation.AutoCompleteLocationListener
+import com.jesualex.autocompletelocation.AutocompleteLocation
+import com.jesualex.autocompletelocation.AutocompleteLocationListener
 import com.jesualex.autocompletelocation.OnPlaceLoadListener
 import com.jesualex.autocompletelocation.OnSearchListener
 import com.jesualex.autocompletelocation.PlaceUtils
 
 class MainActivity : FragmentActivity(),
         OnMapReadyCallback,
-        AutoCompleteLocationListener,
+        AutocompleteLocationListener,
         OnSearchListener,
         OnPlaceLoadListener
 {
@@ -37,7 +37,7 @@ class MainActivity : FragmentActivity(),
                 LatLng(-33.880490, 151.184363),
                 LatLng(-33.858754, 151.229596))
 
-        val autoCompleteLocation = findViewById<AutoCompleteLocation>(R.id.autocomplete_location)
+        val autoCompleteLocation = findViewById<AutocompleteLocation>(R.id.autocomplete_location)
         autoCompleteLocation.setAutoCompleteTextListener(this)
         autoCompleteLocation.setOnSearchListener(this)
         autoCompleteLocation.setCountry("Au")

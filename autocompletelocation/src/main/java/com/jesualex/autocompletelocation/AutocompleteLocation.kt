@@ -25,13 +25,13 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
 
-class AutoCompleteLocation @JvmOverloads constructor(
+class AutocompleteLocation @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = R.attr.autoCompleteTextViewStyle
 ) : AppCompatAutoCompleteTextView(context, attrs, defStyleAttr) {
     private val mCloseIcon: Drawable
-    private val mAutoCompleteAdapter: AutoCompleteAdapter
+    private val mAutocompleteAdapter: AutocompleteAdapter
     private val placesClient: PlacesClient
     private val token: AutocompleteSessionToken
     private val autocompleteClickListener: AdapterView.OnItemClickListener
@@ -39,7 +39,7 @@ class AutoCompleteLocation @JvmOverloads constructor(
     private val onTouchListener: OnTouchListener
     private val textWatcher: TextWatcher
 
-    private var mAutoCompleteLocationListener: AutoCompleteLocationListener? = null
+    private var mAutocompleteLocationListener: AutocompleteLocationListener? = null
     private var onSearchListener: OnSearchListener? = null
     private var placeListener: OnPlaceLoadListener? = null
     private var placeFields: List<Place.Field> = PlaceUtils.defaultFields
@@ -52,30 +52,30 @@ class AutoCompleteLocation @JvmOverloads constructor(
     init {
         val resources = context.resources
         val typedArray = context.obtainStyledAttributes(attrs,
-                R.styleable.AutoCompleteLocation, defStyleAttr, 0)
-        var background = typedArray.getDrawable(R.styleable.AutoCompleteLocation_background_layout)
+                R.styleable.AutocompleteLocation, defStyleAttr, 0)
+        var background = typedArray.getDrawable(R.styleable.AutocompleteLocation_background_layout)
 
         if (background == null) {
             background = ContextCompat.getDrawable(context, R.drawable.bg_rounded_white)
         }
 
-        if (!typedArray.hasValue(R.styleable.AutoCompleteLocation_android_hint)) {
+        if (!typedArray.hasValue(R.styleable.AutocompleteLocation_android_hint)) {
             hint = resources.getString(R.string.default_hint_text)
         }
 
-        if (!typedArray.hasValue(R.styleable.AutoCompleteLocation_android_textColorHint)) {
+        if (!typedArray.hasValue(R.styleable.AutocompleteLocation_android_textColorHint)) {
             setHintTextColor(ContextCompat.getColor(context, R.color.default_hint_text))
         }
 
-        if (!typedArray.hasValue(R.styleable.AutoCompleteLocation_android_textColor)) {
+        if (!typedArray.hasValue(R.styleable.AutocompleteLocation_android_textColor)) {
             setTextColor(ContextCompat.getColor(context, R.color.default_text))
         }
 
-        if (!typedArray.hasValue(R.styleable.AutoCompleteLocation_android_maxLines)) {
+        if (!typedArray.hasValue(R.styleable.AutocompleteLocation_android_maxLines)) {
             maxLines = resources.getInteger(R.integer.default_max_lines)
         }
 
-        if (!typedArray.hasValue(R.styleable.AutoCompleteLocation_android_inputType)) {
+        if (!typedArray.hasValue(R.styleable.AutocompleteLocation_android_inputType)) {
             isHorizontalScrollBarEnabled = true
             inputType = InputType.TYPE_CLASS_TEXT
         }
@@ -85,22 +85,22 @@ class AutoCompleteLocation @JvmOverloads constructor(
         var paddingEnd: Int
         var paddingBottom: Int
         paddingBottom = typedArray.getDimensionPixelSize(
-                R.styleable.AutoCompleteLocation_android_padding, resources.getDimensionPixelSize(R.dimen.default_padding))
+                R.styleable.AutocompleteLocation_android_padding, resources.getDimensionPixelSize(R.dimen.default_padding))
         paddingEnd = paddingBottom
         paddingTop = paddingEnd
         paddingStart = paddingTop
         paddingStart = typedArray.getDimensionPixelSize(
-                R.styleable.AutoCompleteLocation_android_paddingStart, paddingStart)
+                R.styleable.AutocompleteLocation_android_paddingStart, paddingStart)
         paddingTop = typedArray.getDimensionPixelSize(
-                R.styleable.AutoCompleteLocation_android_paddingTop, paddingTop)
+                R.styleable.AutocompleteLocation_android_paddingTop, paddingTop)
         paddingEnd = typedArray.getDimensionPixelSize(
-                R.styleable.AutoCompleteLocation_android_paddingEnd, paddingEnd)
+                R.styleable.AutocompleteLocation_android_paddingEnd, paddingEnd)
         paddingBottom = typedArray.getDimensionPixelSize(
-                R.styleable.AutoCompleteLocation_android_paddingBottom, paddingBottom)
+                R.styleable.AutocompleteLocation_android_paddingBottom, paddingBottom)
 
-        country = typedArray.getString(R.styleable.AutoCompleteLocation_countryCode)
+        country = typedArray.getString(R.styleable.AutocompleteLocation_countryCode)
         mCloseIcon = ContextCompat.getDrawable(context, typedArray.getResourceId(
-                R.styleable.AutoCompleteLocation_closeIcon, R.drawable.ic_close))!!
+                R.styleable.AutocompleteLocation_closeIcon, R.drawable.ic_close))!!
 
         typedArray.recycle()
         setBackground(background)
@@ -109,14 +109,14 @@ class AutoCompleteLocation @JvmOverloads constructor(
 
         placesClient = PlaceUtils.getPlacesClient(getContext())
         token = AutocompleteSessionToken.newInstance()
-        mAutoCompleteAdapter = AutoCompleteAdapter(getContext())
+        mAutocompleteAdapter = AutocompleteAdapter(getContext())
 
         autocompleteClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-            UIUtils.hideKeyboard(this@AutoCompleteLocation.context, this@AutoCompleteLocation)
-            val p = mAutoCompleteAdapter.getItem(position)
+            UIUtils.hideKeyboard(this@AutocompleteLocation.context, this@AutocompleteLocation)
+            val p = mAutocompleteAdapter.getItem(position)
 
-            if (mAutoCompleteLocationListener != null) {
-                mAutoCompleteLocationListener!!.onItemSelected(p)
+            if (mAutocompleteLocationListener != null) {
+                mAutocompleteLocationListener!!.onItemSelected(p)
             }
 
             if (p != null && placeListener != null) {
@@ -126,13 +126,13 @@ class AutoCompleteLocation @JvmOverloads constructor(
 
         editorActionListener = OnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                UIUtils.hideKeyboard(this@AutoCompleteLocation.context, this@AutoCompleteLocation)
+                UIUtils.hideKeyboard(this@AutocompleteLocation.context, this@AutocompleteLocation)
 
                 if (onSearchListener != null) {
-                    onSearchListener!!.onSearch(text.toString(), mAutoCompleteAdapter.resultList)
+                    onSearchListener!!.onSearch(text.toString(), mAutocompleteAdapter.resultList)
                 }
 
-                mAutoCompleteAdapter.notifyDataSetInvalidated()
+                mAutocompleteAdapter.notifyDataSetInvalidated()
                 return@OnEditorActionListener true
             }
 
@@ -140,11 +140,11 @@ class AutoCompleteLocation @JvmOverloads constructor(
         }
 
         onTouchListener = OnTouchListener { _, motionEvent ->
-            if (motionEvent.x > (this@AutoCompleteLocation.width
-                            - this@AutoCompleteLocation.paddingRight
+            if (motionEvent.x > (this@AutocompleteLocation.width
+                            - this@AutocompleteLocation.paddingRight
                             - mCloseIcon.intrinsicWidth)) {
-                this@AutoCompleteLocation.setCompoundDrawables(null, null, null, null)
-                this@AutoCompleteLocation.setText("")
+                this@AutocompleteLocation.setCompoundDrawables(null, null, null, null)
+                this@AutocompleteLocation.setText("")
             }
 
             if (enoughToFilter()) {
@@ -167,8 +167,8 @@ class AutoCompleteLocation @JvmOverloads constructor(
                         null
                 )
 
-                if (mAutoCompleteLocationListener != null && isEmpty) {
-                    mAutoCompleteLocationListener!!.onTextClear()
+                if (mAutocompleteLocationListener != null && isEmpty) {
+                    mAutocompleteLocationListener!!.onTextClear()
                 }
             }
 
@@ -183,7 +183,7 @@ class AutoCompleteLocation @JvmOverloads constructor(
         this.addTextChangedListener(textWatcher)
         this.setOnTouchListener(onTouchListener)
         this.onItemClickListener = autocompleteClickListener
-        this.setAdapter(mAutoCompleteAdapter)
+        this.setAdapter(mAutocompleteAdapter)
         this.setOnEditorActionListener(editorActionListener)
     }
 
@@ -193,7 +193,7 @@ class AutoCompleteLocation @JvmOverloads constructor(
             this.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
         } else {
             this.setCompoundDrawablesWithIntrinsicBounds(null, null,
-                    if (this@AutoCompleteLocation.text.toString().isEmpty()) null else mCloseIcon, null)
+                    if (this@AutocompleteLocation.text.toString().isEmpty()) null else mCloseIcon, null)
         }
     }
 
@@ -232,8 +232,8 @@ class AutoCompleteLocation @JvmOverloads constructor(
     private fun getSuccessListener(): OnSuccessListener<FindAutocompletePredictionsResponse> {
         if (!this::successListener.isInitialized) {
             successListener = OnSuccessListener { resp ->
-                mAutoCompleteAdapter.resultList = resp.autocompletePredictions
-                onFilterComplete(mAutoCompleteAdapter.count)
+                mAutocompleteAdapter.resultList = resp.autocompletePredictions
+                onFilterComplete(mAutocompleteAdapter.count)
             }
         }
 
@@ -243,7 +243,7 @@ class AutoCompleteLocation @JvmOverloads constructor(
     private fun getFailureListener(): OnFailureListener {
         if (!this::failureListener.isInitialized) {
             failureListener = OnFailureListener { e ->
-                mAutoCompleteAdapter.notifyDataSetInvalidated()
+                mAutocompleteAdapter.notifyDataSetInvalidated()
                 Toast.makeText(context, "Error contacting API: " + e.message,
                         Toast.LENGTH_SHORT).show()
             }
@@ -252,8 +252,8 @@ class AutoCompleteLocation @JvmOverloads constructor(
         return failureListener
     }
 
-    fun setAutoCompleteTextListener(autoCompleteLocationListener: AutoCompleteLocationListener) {
-        mAutoCompleteLocationListener = autoCompleteLocationListener
+    fun setAutoCompleteTextListener(autoCompleteLocationListener: AutocompleteLocationListener) {
+        mAutocompleteLocationListener = autoCompleteLocationListener
     }
 
     fun setCountry(country: String) {

@@ -13,7 +13,7 @@ import com.google.android.libraries.places.api.model.AutocompletePrediction
 
 import java.util.ArrayList
 
-class AutoCompleteAdapter(context: Context) : ArrayAdapter<AutocompletePrediction>(
+class AutocompleteAdapter(context: Context) : ArrayAdapter<AutocompletePrediction>(
         context, android.R.layout.simple_expandable_list_item_2, android.R.id.text1
 ) {
     internal var resultList: List<AutocompletePrediction> = ArrayList()

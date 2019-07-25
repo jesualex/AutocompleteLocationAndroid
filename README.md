@@ -9,8 +9,8 @@ Cute kotlin library to implement PlaceAutocomplete in Android
 # Usage
 **Add the dependencies to your gradle file:**
 ```java
-	dependencies {
-    	compile 'com.jesualex.android:autocompletelocation:1.0'
+    dependencies {
+        compile 'com.jesualex.android:autocompletelocation:1.0'
 	}
 ```
 **Get a Google Maps API Key and enabled the Google Places API for Android** *(Add your API Key in values)*:
@@ -24,11 +24,10 @@ Cute kotlin library to implement PlaceAutocomplete in Android
 ```
 **Add the AutocompleteLocation into the layout:**
 ```xml
-  <com.jesualex.autocompletelocation.AutoCompleteLocation
+  <com.jesualex.autocompletelocation.AutocompleteLocation
       android:id="@+id/autocomplete_location"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      />
+      android:layout_height="wrap_content"/>
 ```
 **Set the listeners(All are optional for more comfort):** 
 ```java
@@ -94,7 +93,7 @@ public class MainActivity extends FragmentActivity
 ```
 
 ```xml
-  <com.jesualex.autocompletelocation.AutoCompleteLocation
+  <com.jesualex.autocompletelocation.AutocompleteLocation
       android:id="@+id/autocomplete_location"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -131,7 +130,7 @@ Attributes for custom AutoCompleteLocation
 * __closeIcon__
 
 ```xml
-  <com.jesualex.autocompletelocation.AutoCompleteLocation
+  <com.jesualex.autocompletelocation.AutocompleteLocation
       android:id="@+id/autocomplete_location"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -139,7 +138,9 @@ Attributes for custom AutoCompleteLocation
       app:closeIcon="@drawable/ic_close" />
 ```
 
-The code is based in the Place Autocomplete original concept.
+## Example
+
+To get a small example, please [download this repo](/) add your Google API Key in values and execute it
 
 # License
 	Licensed under the Apache License, Version 2.0 (the "License");

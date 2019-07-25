@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <declare-styleable name="AutoCompleteLocation">
+  <declare-styleable name="AutocompleteLocation">
     <attr name="android:padding" />
     <attr name="android:paddingStart" />
     <attr name="android:paddingTop" />
