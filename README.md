@@ -6,13 +6,39 @@ Cute kotlin library to implement PlaceAutocomplete in Android
 <img src="art/autocomplete.png" width="200px" height="356px" />
 <img src="art/place.png" width="200px" height="356px" />
 
-# Usage
-**Add the dependencies to your gradle file:**
-```java
-    dependencies {
-        compile 'com.jesualex.android:autocompletelocation:1.0'
+## First Steps
+
+In your Project build.gradle you must have the following
+
+``` gradle
+buildscript {
+    ...
+    repositories {
+        ...
+        jcenter()
     }
+    ...
+    dependencies {
+        ...
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+    ...
+}
 ```
+
+In your App build.gradle you must have the following
+
+``` gradle
+...
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+...
+dependencies {
+    ...
+    implementation "com.jesualex.android:autocompletelocation:$last_version"
+}
+```
+
 **Get a Google Maps API Key and enabled the Google Places API for Android** *(Add your API Key in values)*:
 
 ```xml
@@ -32,12 +58,12 @@ Cute kotlin library to implement PlaceAutocomplete in Android
 **Set the listeners(All are optional for more comfort):** 
 ```java
 public class MainActivity extends FragmentActivity
-    implements AutoCompleteLocation.AutoCompleteLocationListener {
+    implements AutocompleteLocation.AutocompleteLocationListener {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     ...
-    AutoCompleteLocation autoCompleteLocation =
-        (AutoCompleteLocation) findViewById(R.id.autocomplete_location);
+    AutocompleteLocation autoCompleteLocation =
+        (AutocompleteLocation) findViewById(R.id.autocomplete_location);
         autoCompleteLocation.setAutoCompleteTextListener(this);
         autoCompleteLocation.setOnSearchListener(this);
   }
@@ -58,8 +84,8 @@ public class MainActivity extends FragmentActivity
 **Place Listener(When this listener is set, after selecting a prediction, the associated place is automatically searched):**
 ```java
     ...
-    AutoCompleteLocation autoCompleteLocation =
-        (AutoCompleteLocation) findViewById(R.id.autocomplete_location);
+    AutocompleteLocation autoCompleteLocation =
+        (AutocompleteLocation) findViewById(R.id.autocomplete_location);
     ...
     //Set placeListener to auto calculate Place object when a AutocompletePrediction has selected.
     autoCompleteLocation.setPlaceListener(this);
@@ -86,8 +112,8 @@ public class MainActivity extends FragmentActivity
 **Limit results by Country:**
 ```java
     ...
-    AutoCompleteLocation autoCompleteLocation =
-        (AutoCompleteLocation) findViewById(R.id.autocomplete_location);
+    AutocompleteLocation autoCompleteLocation =
+        (AutocompleteLocation) findViewById(R.id.autocomplete_location);
     ...
     autoCompleteLocation.setCountry("Au");
 ```
@@ -103,8 +129,8 @@ public class MainActivity extends FragmentActivity
 **Limit results by Bounds:**
 ```java
     ...
-    AutoCompleteLocation autoCompleteLocation =
-        (AutoCompleteLocation) findViewById(R.id.autocomplete_location);
+    AutocompleteLocation autoCompleteLocation =
+        (AutocompleteLocation) findViewById(R.id.autocomplete_location);
     ...
     RectangularBounds bounds = RectangularBounds.newInstance(
             new LatLng(-33.880490, 151.184363),
@@ -125,7 +151,7 @@ public class MainActivity extends FragmentActivity
 ```
 
 # Style it!
-Attributes for custom AutoCompleteLocation
+Attributes for custom AutocompleteLocation
 * __background_layout__
 * __closeIcon__
 
