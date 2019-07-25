@@ -11,7 +11,7 @@ Cute kotlin library to implement PlaceAutocomplete in Android
 ```java
     dependencies {
         compile 'com.jesualex.android:autocompletelocation:1.0'
-	}
+    }
 ```
 **Get a Google Maps API Key and enabled the Google Places API for Android** *(Add your API Key in values)*:
 
